@@ -449,7 +449,7 @@ export function GcodeToolpathViewer({
   }
 
   return (
-    <div className={`relative ${className}`}>
+    <div className={`relative overflow-hidden ${className}`}>
       {/*
         Absolute, not `w-full h-full` (#2887). The canvas is appended here and
         this element is what the ResizeObserver watches, so its height must come

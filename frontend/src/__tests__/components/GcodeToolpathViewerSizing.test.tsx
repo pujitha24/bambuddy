@@ -112,4 +112,18 @@ describe('GcodeToolpathViewer sizing', () => {
     expect(pane.className).toContain('flex-1');
     expect(pane.contains(canvas())).toBe(true);
   });
+
+  it('clips the pane so a lagging canvas cannot add scrollable overflow to the page', () => {
+    const { container } = render(
+      <GcodeToolpathViewer gcodeUrl="/api/v1/archives/224/gcode" className="flex-1 min-h-0" />,
+    );
+
+    // setSize() writes a pixel width that trails the container by one observer
+    // round. Out-of-flow descendants still count toward the scroll container's
+    // overflow, so on lg+ (page height == main height) a canvas one scrollbar
+    // width wider than its container toggled the scrollbar, and thus the
+    // container width, every round (#3371).
+    const pane = container.firstElementChild as HTMLElement;
+    expect(pane.className).toContain('overflow-hidden');
+  });
 });
